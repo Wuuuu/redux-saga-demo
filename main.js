@@ -8,12 +8,16 @@ import createSagaMiddleware from 'redux-saga';
 import Counter from './Counter';
 import User from './components/User';
 import reducer, { userInfo } from './reducers';
-import rootSaga  from './Saga/helloSaga';
+import rootSaga from './Saga/helloSaga';
 
-const sagaMiddleware = createSagaMiddleware()
-const store = createStore(applyMiddleware(createSagaMiddleware(reducer)));
-const userStore = createStore(userInfo, {});
+const sagaMiddleware = createSagaMiddleware(rootSaga);
 
+const store = createStore(
+  reducer,
+  10,
+  applyMiddleware(sagaMiddleware));
+
+const userStore = createStore(userInfo,{});
 
 const action = (type) => store.dispatch({ type });
 const userAction = (type, payload) => userStore.dispatch({ type, payload });
